@@ -19,13 +19,21 @@ var (
 const defaultName = ``
 
 func selectFileSave(c echo.Context) error {
+	extGO := zenity.FileFilter{
+		Name:     "Go files",
+		Patterns: []string{"*.go"},
+	}
+	extIMG := zenity.FileFilter{
+		Name:     "Image files",
+		Patterns: []string{"*.png", "*.gif", "*.ico", "*.jpg", "*.webp"},
+	}
+
 	zenity.SelectFileSave(
 		zenity.ConfirmOverwrite(),
 		zenity.Filename(defaultName),
 		zenity.FileFilters{
-			{"Go files", []string{"*.go"}},
-			{"Web files", []string{"*.html", "*.js", "*.css"}},
-			{"Image files", []string{"*.png", "*.gif", "*.ico", "*.jpg", "*.webp"}},
+			extGO,
+			extIMG,
 		})
 
 	return c.String(http.StatusOK, "ok")

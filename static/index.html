@@ -14,11 +14,20 @@
 </body>
 
 <script>
+    let IsDialogOpened = false
+
     const helloAlert = (who) => {
         alert("Hey " + who + "!!")
     }
+
     const saveAS = async () => {
+        if (IsDialogOpened) {
+            return false
+        }
+
+        IsDialogOpened = true
         const r = await fetch("http://localhost:2918/save-sel", {method: "GET"})
+        IsDialogOpened = false
 
         if (r.ok) {
             const msg = await r.text()
