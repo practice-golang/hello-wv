@@ -50,10 +50,9 @@ func main() {
 		URL: "http://localhost:2918/index.html",
 		WindowConfig: &gowebview.WindowConfig{
 			Title: "안녕 세상!!",
-			Size: &gowebview.Point{
-				X: 800,
-				Y: 600,
-			},
+			// Size: &gowebview.Point{
+			// 	X: 640, Y: 720,
+			// },
 		},
 	})
 	if err != nil {
