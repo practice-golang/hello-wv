@@ -8,14 +8,26 @@
     Hello world ^-^
     <br />
     <button onclick="helloAlert('man')">Hello</button>
+    <button onclick="saveAS()">Save as</button>
+    <br />
+    <input type="file" />
 </body>
 
 <script>
     const helloAlert = (who) => {
         alert("Hey " + who + "!!")
     }
+    const saveAS = async () => {
+        const r = await fetch("http://localhost:2918/save-sel", {method: "GET"})
+
+        if (r.ok) {
+            const msg = await r.text()
+            alert(msg)
+        }
+    }
 </script>
 
+<script></script>
 <style></style>
 
 </html>

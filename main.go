@@ -7,12 +7,29 @@ import (
 	"github.com/inkeliz/gowebview"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"github.com/ncruces/zenity"
 )
 
 var (
 	//go:embed static
 	content embed.FS
 )
+
+const defaultName = ``
+
+func selectFileSave(c echo.Context) error {
+	zenity.SelectFileSave(
+		zenity.ConfirmOverwrite(),
+		zenity.Filename(defaultName),
+		zenity.FileFilters{
+			{"Go files", []string{"*.go"}},
+			{"Web files", []string{"*.html", "*.js", "*.css"}},
+			{"Image files", []string{"*.png", "*.gif", "*.ico", "*.jpg", "*.webp"}},
+		})
+
+	return c.String(http.StatusOK, "ok")
+}
 
 func setupServer() *echo.Echo {
 	e := echo.New()
@@ -26,6 +43,7 @@ func setupServer() *echo.Echo {
 	contentHandler := echo.WrapHandler(http.FileServer(http.FS(content)))
 	contentRewrite := middleware.Rewrite(map[string]string{"/*": "/static/$1"})
 
+	e.GET("/save-sel", selectFileSave)
 	e.GET("/*", contentHandler, contentRewrite)
 
 	return e
